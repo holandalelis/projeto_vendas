@@ -28,12 +28,25 @@ public class VendasApplication {
                 c.setNome(c.getNome() + "atualizado.");
                 clientes.atualizar(c);
             });
-            System.out.println("--------------BUSCANDO CLIENTES------------");
-           clientes.buscarPorNome("ao").forEach(System.out::println);
 
+            todosClientes = clientes.obterTodos();
+            todosClientes.forEach(System.out::println);
+
+           System.out.println("--------------BUSCANDO CLIENTES------------");
+           clientes.buscarPorNome("dr").forEach(System.out::println);
+
+//           System.out.println("--------------DELETANDO CLIENTES------------");
+//           clientes.obterTodos().forEach(c->{
+//               clientes.deletar(c);
+//           });
+
+           System.out.println("--------------BUSCANDO CLIENTES------------");
            todosClientes = clientes.obterTodos();
-           todosClientes.forEach(System.out::println);
-
+           if (todosClientes.isEmpty()){
+                System.out.println("nenhum cliente encontrado");
+            }else{
+                todosClientes.forEach(System.out::println);
+            }
         };
     }
 
