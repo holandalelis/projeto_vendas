@@ -34,17 +34,17 @@ public class Clientes {
         return cliente;
     }
 
-    public Cliente deletar(Cliente cliente){
-        deletar(cliente.getId())
+    public void deletar(Cliente cliente){
+        deletar(cliente.getId());
     }
 
-    public Cliente deletar(Integer id){
+    public void deletar(Integer id){
         jdbcTemplate.update(DELETE, new Object[]{id});
     }
 
     public List<Cliente> buscarPorNome(String nome){
         return jdbcTemplate.query(
-                SELECT_ALL.concat("where nome like ?"),
+                SELECT_ALL.concat(" where nome like ?"),
                 new Object[]{"%"+ nome + "%"},
                 obterClienteMapper());
     }
