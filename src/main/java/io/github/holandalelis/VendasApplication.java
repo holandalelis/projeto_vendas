@@ -1,38 +1,43 @@
 package io.github.holandalelis;
 
-
-import org.springframework.beans.factory.annotation.Value;
+import io.github.holandalelis.domain.entity.Cliente;
+import io.github.holandalelis.domain.repositorio.Clientes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @SpringBootApplication
-@RestController
 public class VendasApplication {
 
-   @Value("${application.name}")
-    private String applicationName;
+    @Bean
+    public CommandLineRunner init(@Autowired Clientes clientes){
+        return args -> {
+            System.out.println("--------------SALVANDO CLIENTES------------");
+           clientes.salvar(new Cliente("Pedro"));
+           clientes.salvar(new Cliente("João"));
+            System.out.println("--------------LISTANDO------------");
+           List<Cliente> todosClientes = clientes.obterTodos();
 
-   @Gato
-   private Animal animal;
+           todosClientes.forEach(System.out::println);
+            System.out.println("--------------ATUALIZANDO CLIENTES------------");
+           todosClientes.forEach(c ->{
+                c.setNome(c.getNome() + "atualizado.");
+                clientes.atualizar(c);
+            });
+            System.out.println("--------------BUSCANDO CLIENTES------------");
+           clientes.buscarPorNome("ao").forEach(System.out::println);
 
-   @Bean(name="executarAnimal")
-   public CommandLineRunner executar(){
-       return args -> {
-           this.animal.fazerBarulho();
-       };
-   }
+           todosClientes = clientes.obterTodos();
+           todosClientes.forEach(System.out::println);
 
-    @GetMapping("/applicationName")
-    public String getApplicationName(){
-        return applicationName;
+        };
     }
 
     public static void main(String[] args) {
         SpringApplication.run(VendasApplication.class, args);
-
     }
 }
