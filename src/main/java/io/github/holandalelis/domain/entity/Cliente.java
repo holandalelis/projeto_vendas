@@ -1,8 +1,15 @@
 package io.github.holandalelis.domain.entity;
 
+import javax.persistence.*;
 import java.sql.ResultSet;
 
+@Entity
+@Table
 public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
     private String nome;
 
