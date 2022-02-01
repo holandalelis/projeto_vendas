@@ -3,7 +3,6 @@ package io.github.holandalelis.domain.repositorio;
 import io.github.holandalelis.domain.entity.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +14,6 @@ import java.util.List;
 
 @Repository
 public class Clientes {
-
-    private static String SELECT_ALL = "select * from Cliente";
-    private static String DELETE = "delete from cliente where id = ?";
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private EntityManager entityManager;
@@ -58,16 +51,5 @@ public class Clientes {
 
     public List<Cliente> obterTodos(){
         return entityManager.createQuery("from Cliente", Cliente.class).getResultList();
-    }
-
-    private RowMapper<Cliente> obterClienteMapper() {
-        return new RowMapper<Cliente>() {
-            @Override
-            public Cliente mapRow(ResultSet resultSet, int i) throws SQLException {
-                Integer id = resultSet.getInt("id");
-                String nome = resultSet.getString("nome");
-                return new Cliente(id, nome);
-            }
-        };
     }
 }
