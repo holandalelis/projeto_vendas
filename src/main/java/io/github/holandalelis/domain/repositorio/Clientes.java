@@ -2,14 +2,11 @@ package io.github.holandalelis.domain.repositorio;
 
 import io.github.holandalelis.domain.entity.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -32,6 +29,9 @@ public class Clientes {
 
     @Transactional
     public void deletar(Cliente cliente){
+        if(!entityManager.contains(cliente)){
+            cliente = entityManager.merge(cliente);
+        }
         entityManager.remove(cliente);
     }
 
@@ -49,6 +49,7 @@ public class Clientes {
         return query.getResultList();
     }
 
+    @Transactional(readOnly = true)
     public List<Cliente> obterTodos(){
         return entityManager.createQuery("from Cliente", Cliente.class).getResultList();
     }

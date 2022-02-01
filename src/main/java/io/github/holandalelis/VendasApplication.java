@@ -32,13 +32,13 @@ public class VendasApplication {
             todosClientes = clientes.obterTodos();
             todosClientes.forEach(System.out::println);
 
-           System.out.println("--------------BUSCANDO CLIENTES------------");
-           clientes.buscarPorNome("dr").forEach(System.out::println);
+//           System.out.println("--------------BUSCANDO CLIENTES------------");
+//           clientes.buscarPorNome("dr").forEach(System.out::println);
 
-//           System.out.println("--------------DELETANDO CLIENTES------------");
-//           clientes.obterTodos().forEach(c->{
-//               clientes.deletar(c);
-//           });
+           System.out.println("--------------DELETANDO CLIENTES------------");
+           clientes.obterTodos().forEach(c->{
+               clientes.deletar(c);
+           });
 
            System.out.println("--------------BUSCANDO CLIENTES------------");
            todosClientes = clientes.obterTodos();
