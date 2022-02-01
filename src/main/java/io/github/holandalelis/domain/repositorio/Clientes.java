@@ -32,16 +32,16 @@ public class Clientes {
 
     @Transactional
     public Cliente atualizar(Cliente cliente){
-        EntityManager.merge(cliente);
+        entityManager.merge(cliente);
         return cliente;
     }
 
     public void deletar(Cliente cliente){
-        deletar(cliente.getId());
+        entityManager.remove(cliente);
     }
 
     public void deletar(Integer id){
-        jdbcTemplate.update(DELETE, new Object[]{id});
+        entityManager.find(Cliente.class, id);
     }
 
     public List<Cliente> buscarPorNome(String nome){
