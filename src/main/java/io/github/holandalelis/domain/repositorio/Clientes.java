@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,23 +37,27 @@ public class Clientes {
         return cliente;
     }
 
+    @Transactional
     public void deletar(Cliente cliente){
         entityManager.remove(cliente);
     }
 
+    @Transactional
     public void deletar(Integer id){
-        entityManager.find(Cliente.class, id);
+        Cliente cliente = entityManager.find(Cliente.class, id);
+        deletar(cliente);
     }
 
+    @Transactional(readOnly = true)
     public List<Cliente> buscarPorNome(String nome){
-        return jdbcTemplate.query(
-                SELECT_ALL.concat(" where nome like ?"),
-                new Object[]{"%"+ nome + "%"},
-                obterClienteMapper());
+        String jpql = "select c from Cliente c where c.nome like :nome";
+        TypedQuery<Cliente> query = entityManager.createQuery(jpql, Cliente.class);
+        query.setParameter(nome, "%" + "%");
+        return query.getResultList();
     }
 
     public List<Cliente> obterTodos(){
-        return jdbcTemplate.query(SELECT_ALL, obterClienteMapper());
+        return entityManager.createQuery("from Cliente", Cliente.class).getResultList();
     }
 
     private RowMapper<Cliente> obterClienteMapper() {
